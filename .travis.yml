@@ -1,5 +1,3 @@
-# vi: set ft=yaml ts=4 sw=4 sts=0 et:
-
 sudo: required
 language: c
 ebv:
@@ -7,7 +5,7 @@ ebv:
         - BINTRAY_USER=yokogawa
         - BINTRA_REPO=debian
         - BINTRA_API=https://api.bintray.com
-        - secure: "Uyagu265V/c3vwOCBuaTizG6hBEGx5fQVBPhCl26c0T9NRKxDlawBTCgwaG23ylxbOIa4Tw5r9baXpm2DobLp/sku+YqZ6I6dWpEBW7Bq0OAe0UEdwZBWDZnTsmsqi93uP0TRuKIGH6Aa9me7jXueNUwfgNSWzu8MiPv19rTt9hGAX/JmSBHvn6U28yEJ/o7Z9en94pijhkBRTmWoa6Zxe8vCyWeKVviLXG4qfh5YsNq4WrXwm9JlIVWa6rTW5Rq++6DmEFGdLoS9ajoUx1GFGjo9MlIn38Y9ZtWp1omCtXiOMnW8fgkU94fyi9M3b6sqjnoKPNfz/WeJ14givm639wmbMMKaBow1wuIPQskQPd3xq1gEkM6qvCze3SSC+SETldHWJ+Ba2/QbmrUv3JIuGQ7dzd4A31catTr8/0a8nZnUq3wM606E0otvrHutkpPV7IBpN50fJTKNBZey4tlhd072U5np0cAncglYFZRXMD2+jw/m81CCqxrrEsrYqwg2ug5UFt70DP73SlVuUaU0Ijx+Zb8svwd+8gxLBoydbAruDd8Lcxlh+tI9x2+juBmGW3p72X11wyTDnqlU4qdbxr47u1ZxAsVCXdKfau0sI/KB/d0CiEJiRCObwcxnyHuuXpNiCZm5O4q+z0+RgDpow8V/z1kN7PX1gB0/lfkf+8="
+        - secure: Uyagu265V/c3vwOCBuaTizG6hBEGx5fQVBPhCl26c0T9NRKxDlawBTCgwaG23ylxbOIa4Tw5r9baXpm2DobLp/sku+YqZ6I6dWpEBW7Bq0OAe0UEdwZBWDZnTsmsqi93uP0TRuKIGH6Aa9me7jXueNUwfgNSWzu8MiPv19rTt9hGAX/JmSBHvn6U28yEJ/o7Z9en94pijhkBRTmWoa6Zxe8vCyWeKVviLXG4qfh5YsNq4WrXwm9JlIVWa6rTW5Rq++6DmEFGdLoS9ajoUx1GFGjo9MlIn38Y9ZtWp1omCtXiOMnW8fgkU94fyi9M3b6sqjnoKPNfz/WeJ14givm639wmbMMKaBow1wuIPQskQPd3xq1gEkM6qvCze3SSC+SETldHWJ+Ba2/QbmrUv3JIuGQ7dzd4A31catTr8/0a8nZnUq3wM606E0otvrHutkpPV7IBpN50fJTKNBZey4tlhd072U5np0cAncglYFZRXMD2+jw/m81CCqxrrEsrYqwg2ug5UFt70DP73SlVuUaU0Ijx+Zb8svwd+8gxLBoydbAruDd8Lcxlh+tI9x2+juBmGW3p72X11wyTDnqlU4qdbxr47u1ZxAsVCXdKfau0sI/KB/d0CiEJiRCObwcxnyHuuXpNiCZm5O4q+z0+RgDpow8V/z1kN7PX1gB0/lfkf+8=
 services:
     - docker
 before_script:
@@ -22,4 +20,7 @@ script:
     - docker run -t --env-file env.txt -v ${PWD}:/usr/src kernel-build build
 deploy:
     provider: script
-    script: ./bintray.sh deploy
+    script: "./bintray.sh deploy"
+    notifications:
+        slack:
+            secure: rGQadKaNiO4T+mOknaaAENbIp7BI9R+R37tWNgiJE5wqp2fuSdUSQQT1capJb6q5G3asV2PxB54x3jGPbY1tdD/8jxRVQxQOgHGGuoHjwP0vNYITXNfSZZJYDv1k0ETaKA4IJ1WxuxmePceipzQO8UNyEXzhxXpoqrL6zFDO9JHnq5cyB972F0VTHTdrVoaggfc2F24pFdeponA/1FxMxYsHXi6p2850I5ntun+Y3UUWuZm77V6OV4u6rhHYj3HIAhgDLoeM5l/c6VEmxmO1aFUD9BCuwa8WWUze866b0gcCCamg0ZFtyKhdtx44xvSXlpaad7ZaSLXPPxHF9VkeqtHg5XRPEPAr6CEyQEXJcF375tUS4ASw5pAeg6NwYGhwURKkmwlqzUWeps6xh9nyAi6uZPaO85ao/lUJKePd++eXtvi7G97S+jeP1AYm7UPFK6V8AtuZbZde937QJ923eshIbGrxcA0/UgtEZi1GPLbkqouUA+LiTWbOuEQGFSM1cz2GrG6elJDauSFkvwI8W9S660meDFib+fye36VpTJKYS1dVuoUlvq1dZmcz8/F/gh1uWKDVgemBRPe/uNKM5rc6c/Zpe3nuqWkWfkOPj5yjnYXjBjaYHC/e9YCcUVhuKziPicwsXR6CbdnNjqa8iBilclIjf+x56XaxPxrRYqA=

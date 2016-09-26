@@ -1,2 +1,6 @@
 env.txt
 *.deb
+
+aufs4-standalone/
+linux-*
+check-config.sh
