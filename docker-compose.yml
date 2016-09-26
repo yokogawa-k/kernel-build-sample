@@ -3,6 +3,9 @@ version: '2'
 services:
     kernel-build:
         build: .
+        volumes:
+            - ./:/usr/src/
+        command: ["build"]
         #environment:
         #    # specific kernel version
         #    - LATEST=4.7.0
