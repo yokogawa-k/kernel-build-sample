@@ -1,0 +1,25 @@
+# vi: set ft=yaml ts=4 sw=4 sts=0 et:
+
+sudo: required
+language: c
+ebv:
+    global:
+        - BINTRAY_USER=yokogawa
+        - BINTRA_REPO=debian
+        - BINTRA_API=https://api.bintray.com
+        - secure: "Uyagu265V/c3vwOCBuaTizG6hBEGx5fQVBPhCl26c0T9NRKxDlawBTCgwaG23ylxbOIa4Tw5r9baXpm2DobLp/sku+YqZ6I6dWpEBW7Bq0OAe0UEdwZBWDZnTsmsqi93uP0TRuKIGH6Aa9me7jXueNUwfgNSWzu8MiPv19rTt9hGAX/JmSBHvn6U28yEJ/o7Z9en94pijhkBRTmWoa6Zxe8vCyWeKVviLXG4qfh5YsNq4WrXwm9JlIVWa6rTW5Rq++6DmEFGdLoS9ajoUx1GFGjo9MlIn38Y9ZtWp1omCtXiOMnW8fgkU94fyi9M3b6sqjnoKPNfz/WeJ14givm639wmbMMKaBow1wuIPQskQPd3xq1gEkM6qvCze3SSC+SETldHWJ+Ba2/QbmrUv3JIuGQ7dzd4A31catTr8/0a8nZnUq3wM606E0otvrHutkpPV7IBpN50fJTKNBZey4tlhd072U5np0cAncglYFZRXMD2+jw/m81CCqxrrEsrYqwg2ug5UFt70DP73SlVuUaU0Ijx+Zb8svwd+8gxLBoydbAruDd8Lcxlh+tI9x2+juBmGW3p72X11wyTDnqlU4qdbxr47u1ZxAsVCXdKfau0sI/KB/d0CiEJiRCObwcxnyHuuXpNiCZm5O4q+z0+RgDpow8V/z1kN7PX1gB0/lfkf+8="
+services:
+    - docker
+before_script:
+    - echo "LATEST=$(curl -sL https://www.kernel.org/finger_banner | awk '/^The latest stable/ {print $11} ')" > env.txt
+    - echo "CUSTOM_NAME=aufs" >> env.txt
+    - echo "CUSTOM_REVISION=$(./bintray.sh get_revision)" >> env.txt
+    - docker version
+    - docker build -t kernel-build .
+script:
+    - docker run -t --env-file env.txt -v ${PWD}:/usr/src kernel-build setup
+    - docker run -t --env-file env.txt -v ${PWD}:/usr/src kernel-build check
+    - docker run -t --env-file env.txt -v ${PWD}:/usr/src kernel-build build
+deploy:
+    provider: script
+    script: ./bintray.sh deploy

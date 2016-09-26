@@ -1,0 +1,11 @@
+version: '2'
+
+services:
+    kernel-build:
+        build: .
+        #environment:
+        #    # specific kernel version
+        #    - LATEST=4.7.0
+        #    # archive download url 
+        #    - BASEURL=http://ftp.iij.ad.jp/pub/linux/kernel/linux/kernel
+
