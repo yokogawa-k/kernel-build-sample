@@ -13,11 +13,11 @@ before_script:
     - echo "CUSTOM_NAME=aufs" >> env.txt
     - echo "CUSTOM_REVISION=$(./bintray.sh get_revision)" >> env.txt
     - docker version
-    - docker build -t kernel-build .
+    - docker pull yokogawa/build-debian-kernel-package
 script:
-    - docker run -t --env-file env.txt -v ${PWD}:/usr/src kernel-build setup
-    - docker run -t --env-file env.txt -v ${PWD}:/usr/src kernel-build check
-    - docker run -t --env-file env.txt -v ${PWD}:/usr/src kernel-build build
+    - docker run -t --env-file env.txt -v ${PWD}:/usr/src yokogawa/build-debian-kernel-package setup
+    - docker run -t --env-file env.txt -v ${PWD}:/usr/src yokogawa/build-debian-kernel-package check
+    - docker run -t --env-file env.txt -v ${PWD}:/usr/src yokogawa/build-debian-kernel-package build
 deploy:
     provider: script
     script: "./bintray.sh deploy"
