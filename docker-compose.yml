@@ -2,7 +2,7 @@ version: '2'
 
 services:
     kbuild:
-        build: yokogawa/build-debian-kernel-package
+        image: yokogawa/build-debian-kernel-package
         volumes:
             - ./:/usr/src/
         command: ["build"]
