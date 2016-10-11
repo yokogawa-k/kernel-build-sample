@@ -8,12 +8,12 @@ env:
 
 build:                                                  
     pre_ci:                               
-        - echo "LATEST=$(curl -sL https://www.kernel.org/finger_banner | awk '/^The latest stable/ {print $11} ')" > env.txt
-        - echo "CUSTOM_NAME=aufs" >> env.txt
-        - echo "CUSTOM_REVISION=$(./bintray.sh get_revision)" >>env.txt
         - docker pull yokogawa/build-debian-kernel-package
     pre_ci_boot:                          
     ci:
+        - echo "LATEST=$(curl -sL https://www.kernel.org/finger_banner | awk '/^The latest stable/ {print $11} ')" > env.txt
+        - echo "CUSTOM_NAME=aufs" >> env.txt
+        - echo "CUSTOM_REVISION=$(./bintray.sh get_revision)" >>env.txt
         - docker run -t --env-file env.txt -v ${PWD}:/usr/src yokogawa/build-debian-kernel-package setup
         - docker run -t --env-file env.txt -v ${PWD}:/usr/src yokogawa/build-debian-kernel-package check
         - docker run -t --env-file env.txt -v ${PWD}:/usr/src yokogawa/build-debian-kernel-package build
