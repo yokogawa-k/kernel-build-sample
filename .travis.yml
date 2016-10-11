@@ -1,6 +1,6 @@
 sudo: required
 language: c
-ebv:
+env:
     global:
         - BINTRAY_USER=yokogawa
         - BINTRA_REPO=debian
