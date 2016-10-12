@@ -13,10 +13,10 @@ build:
     pre_ci:                               
         - docker build -t build-debian-kernel-package -f Dockerfile.shippable .
     pre_ci_boot:
-        - image_name: build-debian-kernel-package
-        - image_tag: latest
-        - pull: false
-        - options: "-v /root/src"
+        image_name: build-debian-kernel-package
+        image_tag: latest
+        pull: false
+        options: "-v /root/src"
     ci:
         - echo "LATEST=$(curl -sL https://www.kernel.org/finger_banner | awk '/^The latest stable/ {print $11; exit} ')" > env.txt
         - echo "CUSTOM_NAME=aufs" >> env.txt
