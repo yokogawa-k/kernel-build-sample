@@ -1,5 +1,8 @@
 language: c
 
+compiler:
+    - gcc
+
 env:                                                
     global:
         - BINTRAY_USER=yokogawa
@@ -8,21 +11,25 @@ env:
 
 build:                                                  
     pre_ci:                               
-        - docker pull yokogawa/build-debian-kernel-package
+        - docker build -t build-debian-kernel-package -f Dockerfile.shippable .
     pre_ci_boot:
-        - options: "-v /root"
+        - image_name: build-debian-kernel-package
+        - image_tag: latest
+        - pull: true
+        - options: "-v /root/src"
     ci:
         - echo "LATEST=$(curl -sL https://www.kernel.org/finger_banner | awk '/^The latest stable/ {print $11; exit} ')" > env.txt
         - echo "CUSTOM_NAME=aufs" >> env.txt
         - echo "CUSTOM_REVISION=$(./bintray.sh get_revision)" >> env.txt
+        - env
         - echo ${PWD}
         - ls -l
         - cat env.txt
-        - docker run -t --env-file env.txt --volumes-from ${SHIPPABLE_CONTAINER_NAME} -w /root/src/github.com/yokogawa-k/kernel-build-sample/ --entrypoint=create-kernel-pkg.sh yokogawa/build-debian-kernel-package setup
+        - docker run -t --env-file env.txt --volumes-from ${SHIPPABLE_CONTAINER_NAME} -w ${SHIPPABLE_BUILD_DIR} yokogawa/build-debian-kernel-package setup
         - ls -l
-        - docker run -t --env-file env.txt --volumes-from ${SHIPPABLE_CONTAINER_NAME} -w /root/src/github.com/yokogawa-k/kernel-build-sample/ --entrypoint=create-kernel-pkg.sh yokogawa/build-debian-kernel-package check
+        - docker run -t --env-file env.txt --volumes-from ${SHIPPABLE_CONTAINER_NAME} -w ${SHIPPABLE_BUILD_DIR} yokogawa/build-debian-kernel-package check
         - ls -l
-        - docker run -t --env-file env.txt --volumes-from ${SHIPPABLE_CONTAINER_NAME} -w /root/src/github.com/yokogawa-k/kernel-build-sample/ --entrypoint=create-kernel-pkg.sh yokogawa/build-debian-kernel-package build
+        - docker run -t --env-file env.txt --volumes-from ${SHIPPABLE_CONTAINER_NAME} -w ${SHIPPABLE_BUILD_DIR} yokogawa/build-debian-kernel-package build
         - ls -l
     post_ci:
     on_success:
