@@ -22,11 +22,11 @@ build:
         - echo ${PWD}
         - ls -l
         - cat env.txt
-        - docker run -t --env-file env.txt --volumes-from ${SHIPPABLE_CONTAINER_NAME} -w ${SHIPPABLE_BUILD_DIR} --entrypoint=create-kernel-pkg.sh yokogawa/build-debian-kernel-package setup
+        - docker run -t --env-file env.txt --volumes-from ${SHIPPABLE_CONTAINER_NAME} -w ${SHIPPABLE_BUILD_DIR} --entrypoint=${SHIPPABLE_BUILD_DIR}/create-kernel-pkg.sh yokogawa/build-debian-kernel-package setup
         - ls -l
-        - docker run -t --env-file env.txt --volumes-from ${SHIPPABLE_CONTAINER_NAME} -w ${SHIPPABLE_BUILD_DIR} --entrypoint=create-kernel-pkg.sh yokogawa/build-debian-kernel-package check
+        - docker run -t --env-file env.txt --volumes-from ${SHIPPABLE_CONTAINER_NAME} -w ${SHIPPABLE_BUILD_DIR} --entrypoint=${SHIPPABLE_BUILD_DIR}/create-kernel-pkg.sh yokogawa/build-debian-kernel-package check
         - ls -l
-        - docker run -t --env-file env.txt --volumes-from ${SHIPPABLE_CONTAINER_NAME} -w ${SHIPPABLE_BUILD_DIR} --entrypoint=create-kernel-pkg.sh yokogawa/build-debian-kernel-package build
+        - docker run -t --env-file env.txt --volumes-from ${SHIPPABLE_CONTAINER_NAME} -w ${SHIPPABLE_BUILD_DIR} --entrypoint=${SHIPPABLE_BUILD_DIR}/create-kernel-pkg.sh yokogawa/build-debian-kernel-package build
         - ls -l
     post_ci:
     on_success:
