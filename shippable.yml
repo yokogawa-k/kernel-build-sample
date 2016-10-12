@@ -15,7 +15,7 @@ build:
     pre_ci_boot:
         - image_name: build-debian-kernel-package
         - image_tag: latest
-        - pull: true
+        - pull: false
         - options: "-v /root/src"
     ci:
         - echo "LATEST=$(curl -sL https://www.kernel.org/finger_banner | awk '/^The latest stable/ {print $11; exit} ')" > env.txt
