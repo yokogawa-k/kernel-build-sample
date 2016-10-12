@@ -11,11 +11,8 @@ env:
 
 build:                                                  
     pre_ci:                               
-        - docker build -t build-debian-kernel-package -f Dockerfile.shippable .
+        - docker pull yokogawa/build-debian-kernel-package
     pre_ci_boot:
-        image_name: build-debian-kernel-package
-        image_tag: latest
-        pull: false
         options: "-v /root/src"
     ci:
         - echo "LATEST=$(curl -sL https://www.kernel.org/finger_banner | awk '/^The latest stable/ {print $11; exit} ')" > env.txt
@@ -25,11 +22,11 @@ build:
         - echo ${PWD}
         - ls -l
         - cat env.txt
-        - docker run -t --env-file env.txt --volumes-from ${SHIPPABLE_CONTAINER_NAME} -w ${SHIPPABLE_BUILD_DIR} yokogawa/build-debian-kernel-package setup
+        - docker run -t --env-file env.txt --volumes-from ${SHIPPABLE_CONTAINER_NAME} -w ${SHIPPABLE_BUILD_DIR} --entrypoint=create-kernel-pkg.sh yokogawa/build-debian-kernel-package setup
         - ls -l
-        - docker run -t --env-file env.txt --volumes-from ${SHIPPABLE_CONTAINER_NAME} -w ${SHIPPABLE_BUILD_DIR} yokogawa/build-debian-kernel-package check
+        - docker run -t --env-file env.txt --volumes-from ${SHIPPABLE_CONTAINER_NAME} -w ${SHIPPABLE_BUILD_DIR} --entrypoint=create-kernel-pkg.sh yokogawa/build-debian-kernel-package check
         - ls -l
-        - docker run -t --env-file env.txt --volumes-from ${SHIPPABLE_CONTAINER_NAME} -w ${SHIPPABLE_BUILD_DIR} yokogawa/build-debian-kernel-package build
+        - docker run -t --env-file env.txt --volumes-from ${SHIPPABLE_CONTAINER_NAME} -w ${SHIPPABLE_BUILD_DIR} --entrypoint=create-kernel-pkg.sh yokogawa/build-debian-kernel-package build
         - ls -l
     post_ci:
     on_success:
